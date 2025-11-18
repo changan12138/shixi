@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.manger.mapper.DeptMapper">
+
+<!--    <select id="selectAllDept" resultType="com.itheima.manger.entity.Dept">-->
+<!--        SELECT id, name, create_time AS createTime, update_time AS updateTime-->
+<!--        FROM dept-->
+<!--    </select>-->
+
+<!--    <delete id="delete" parameterType="int">-->
+<!--        DELETE FROM dept WHERE id = #{id}-->
+<!--    </delete>-->
+
+</mapper>

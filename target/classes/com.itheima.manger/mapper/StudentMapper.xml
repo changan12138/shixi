@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.manger.mapper.StudentMapper">
+    <insert id="stuadd">
+        insert into student (id,name,no,gender,phone,id_card,is_college,
+        address,degree,graduation_date,clazz_id,violation_count,violation_score,
+                             create_time,update_time)
+        values (null,#{name},#{no},#{gender},#{phone},#{idCard},#{isCollege},
+                #{address},#{degree},#{graduationDate},#{clazzId},0,0,now(),now())
+    </insert>
+    <update id="stupate">
+        update student set name=#{name},no=#{no},phone=#{phone},gender=#{gender},
+     degree=#{degree},id_card=#{idCard},is_college=#{isCollege},address=#{address},
+     graduation_date=#{graduationDate},clazz_id=#{clazzId},update_time=now() where id =#{id}
+    </update>
+    <update id="stuvio">
+        update student set  violation_count = violation_count + 1,
+                            violation_score = violation_score + #{score}
+        where id =#{id}
+    </update>
+
+    <delete id="studelete">
+        delete from student
+        <where>
+            id in <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        </where>
+    </delete>
+    <select id="stupage" resultType="com.itheima.manger.entity.Student">
+        select student.*,clazz.name from student left join clazz on student.clazz_id = clazz.id
+        <where>
+            <if test="name!=null and name !=''">
+               and student.name like concat ('%',#{name},'%')
+            </if>
+            <if test="degree!=null and degree!=''">
+                and degree =#{degree}
+            </if>
+            <if test="clazzId!=null and clazzId!=''">
+                and clazz_id =#{clazzId}
+            </if>
+        </where>
+
+    </select>
+    <select id="stuselect" resultType="com.itheima.manger.entity.Student">
+        select * from student where id =#{id}
+    </select>
+    <select id="studegree" resultType="com.itheima.manger.entity.Empre">
+        select
+            case
+                when degree = 1 then '初中'
+                when degree = 2 then '高中'
+        when degree = 3 then '大专'
+        when degree=4 then '本科'
+        when degree =5 then '硕士'
+        when degree =6 then '博士'
+        end as name,
+        count(*) as value
+        from student
+        group by degree
+        order by value
+    </select>
+    <select id="stucount" resultType="com.itheima.manger.entity.Empre">
+        select clazz.name as name,count(student.id) as value
+        from clazz left join student on student.clazz_id=clazz.id
+        group by clazz.name,clazz.id
+        order by clazz.id;
+    </select>
+</mapper>
